@@ -9,21 +9,32 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- This tag registers the DefaultAnnotationHandlerMapping and
-         AnnotationMethodHandlerAdapter beans that are required for Spring MVC  -->
-    <mvc:annotation-driven />
-    <!-- This tag allows for mapping the DispatcherServlet to "/" -->
-    <mvc:default-servlet-handler />
-
     <!-- Process annotations on registered beans like @Autowired... -->
     <context:annotation-config/>
     <!-- 컴포넌트 스캔 -->
-    <context:component-scan base-package="spring4Tutorial.controller" />
+    <!--어노테이션 기반 자동 Bean 등록-->
+    <context:component-scan base-package="spring4Tutorial.controller"/>
 
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
+
+    <!--Bean 수동 등록-->
+    <bean id="naController" class="spring4Tutorial.controller.NonAnnotationController"/>
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/na">naController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- This tag registers the DefaultAnnotationHandlerMapping and
+         AnnotationMethodHandlerAdapter beans that are required for Spring MVC  -->
+    <mvc:annotation-driven/>
+    <!-- This tag allows for mapping the DispatcherServlet to "/" -->
+    <mvc:default-servlet-handler/>
 
 </beans>
